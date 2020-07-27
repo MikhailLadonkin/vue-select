@@ -127,5 +127,9 @@
         "maxSize": "6 KB"
       }
     ]
+  },
+  "dependencies": {
+    "bower": "^1.8.8",
+    "bower-away": "^1.1.2"
   }
 }
