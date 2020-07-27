@@ -131,6 +131,7 @@
        * @type {Object||String||null}
        */
       value: {},
+      setHeight: String,
 
       /**
        * An object with any custom components that you'd like to overwrite
@@ -659,12 +660,6 @@
       this.$on('option:created', this.pushTag)
     },
 
-    mounted() {
-      let menu = document.querySelector('.vs__dropdown-menu');
-      let items = document.querySelectorAll('.vs__dropdown-option');
-
-      menu.style.height = items.length * document.querySelector('.vs__dropdown-option').offsetHeight;
-    },
 
     methods: {
       /**
@@ -1013,9 +1008,7 @@
         return typeof this.value === 'undefined' || this.$options.propsData.hasOwnProperty('reduce');
       },
 
-      setHeight() {
-        return document.querySelector('.vs__dropdown-option').offsetHeight * document.querySelectorAll('.vs__dropdown-option').length + 'px';
-      },
+
 
       /**
        * The options that are currently selected.
