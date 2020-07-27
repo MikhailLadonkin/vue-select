@@ -67,7 +67,7 @@
       </div>
     </div>
     <transition :name="transition">
-        <ul ref="dropdownMenu" v-if="dropdownOpen" :id="`vs${uid}__listbox`" :key="`vs${uid}__listbox`" class="vs__dropdown-menu" role="listbox" @mousedown.prevent="onMousedown" @mouseup="onMouseUp" v-append-to-body :height="setHeight">
+        <ul ref="dropdownMenu" v-if="dropdownOpen" :id="`vs${uid}__listbox`" :key="`vs${uid}__listbox`" class="vs__dropdown-menu" role="listbox" @mousedown.prevent="onMousedown" @mouseup="onMouseUp" v-append-to-body :style="{height:setHeight}">
           <scrolly :passiveScroll="false" class="foo" :style="{ width: '100%', height: '100%' }">
             <scrolly-viewport>
               <slot name="list-header" v-bind="scope.listHeader" />
