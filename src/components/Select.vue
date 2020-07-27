@@ -1,14 +1,6 @@
 <style lang="scss">
   @import '../scss/vue-select.scss';
 
-  .vs__dropdown-menu {
-    min-height: 340px;
-  }
-
-  .scrolly {
-    min-height: 340px;
-  }
-
   .scrolly-bar.axis-y {
     box-sizing: content-box;
     /*display: block !important;*/
@@ -665,6 +657,13 @@
       }
 
       this.$on('option:created', this.pushTag)
+    },
+
+    mounted() {
+      let menu = document.querySelector('.vs__dropdown-menu');
+      let items = document.querySelectorAll('.vs__dropdown-option');
+
+      menu.style.height = items.length * document.querySelector('.vs__dropdown-option').offsetHeight;
     },
 
     methods: {
