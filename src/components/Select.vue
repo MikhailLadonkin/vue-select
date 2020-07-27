@@ -1014,7 +1014,7 @@
       },
 
       setHeight() {
-        document.querySelector('.vs__dropdown-menu').style.height = document.querySelector('.vs__dropdown-option').offsetHeight * document.querySelectorAll('.vs__dropdown-option').length + 'px';
+        return document.querySelector('.vs__dropdown-option').offsetHeight * document.querySelectorAll('.vs__dropdown-option').length + 'px';
       },
 
       /**
