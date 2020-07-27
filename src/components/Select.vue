@@ -1,5 +1,27 @@
 <style lang="scss">
   @import '../scss/vue-select.scss';
+
+  .vs__dropdown-menu {
+    min-height: 340px;
+  }
+
+  .scrolly {
+    min-height: 340px;
+  }
+
+  .scrolly-bar.axis-y {
+    box-sizing: content-box;
+    /*display: block !important;*/
+    width: 6px !important;
+    /*bottom: unset;*/
+    opacity: 1 !important;
+    z-index: 666;
+    right: -7px!important;
+    height: 46px!important;
+  }
+  .scrolly-bar::before {
+    background: #E5E5E5 !important;
+  }
 </style>
 
 <template>
@@ -53,37 +75,42 @@
       </div>
     </div>
     <transition :name="transition">
-      <slot name="dropdownMenu">
         <ul ref="dropdownMenu" v-if="dropdownOpen" :id="`vs${uid}__listbox`" :key="`vs${uid}__listbox`" class="vs__dropdown-menu" role="listbox" @mousedown.prevent="onMousedown" @mouseup="onMouseUp" v-append-to-body>
-          <slot name="list-header" v-bind="scope.listHeader" />
-          <li
-                  role="option"
-                  v-for="(option, index) in filteredOptions"
-                  :key="getOptionKey(option)"
-                  :id="`vs${uid}__option-${index}`"
-                  class="vs__dropdown-option"
-                  :class="{ 'vs__dropdown-option--selected': isOptionSelected(option), 'vs__dropdown-option--highlight': index === typeAheadPointer, 'vs__dropdown-option--disabled': !selectable(option) }"
-                  :aria-selected="index === typeAheadPointer ? true : null"
-                  @mouseover="selectable(option) ? typeAheadPointer = index : null"
-                  @mousedown.prevent.stop="selectable(option) ? select(option) : null"
-          >
-            <slot name="option" v-bind="normalizeOptionForSlot(option)">
-              {{ getOptionLabel(option) }}
-            </slot>
-          </li>
-          <li v-if="filteredOptions.length === 0" class="vs__no-options">
-            <slot name="no-options" v-bind="scope.noOptions">Sorry, no matching options.</slot>
-          </li>
-          <slot name="list-footer" v-bind="scope.listFooter" />
+          <scrolly :passiveScroll="false" class="foo" :style="{ width: '100%', height: '100%' }">
+            <scrolly-viewport>
+              <slot name="list-header" v-bind="scope.listHeader" />
+              <li
+                      role="option"
+                      v-for="(option, index) in filteredOptions"
+                      :key="getOptionKey(option)"
+                      :id="`vs${uid}__option-${index}`"
+                      class="vs__dropdown-option"
+                      :class="{ 'vs__dropdown-option--selected': isOptionSelected(option), 'vs__dropdown-option--highlight': index === typeAheadPointer, 'vs__dropdown-option--disabled': !selectable(option) }"
+                      :aria-selected="index === typeAheadPointer ? true : null"
+                      @mouseover="selectable(option) ? typeAheadPointer = index : null"
+                      @mousedown.prevent.stop="selectable(option) ? select(option) : null"
+              >
+                <slot name="option" v-bind="normalizeOptionForSlot(option)">
+                  {{ getOptionLabel(option) }}
+                </slot>
+              </li>
+              <li v-if="filteredOptions.length === 0" class="vs__no-options">
+                <slot name="no-options" v-bind="scope.noOptions">Sorry, no matching options.</slot>
+              </li>
+              <slot name="list-footer" v-bind="scope.listFooter" />
+            </scrolly-viewport>
+            <scrolly-bar axis="y"></scrolly-bar>
+          </scrolly>
         </ul>
-        <ul v-else :id="`vs${uid}__listbox`" role="listbox" style="display: none; visibility: hidden;"></ul>
-      </slot>
+          <ul v-else :id="`vs${uid}__listbox`" role="listbox" style="display: none; visibility: hidden;"></ul>
     </transition>
     <slot name="footer" v-bind="scope.footer" />
   </div>
 </template>
 
 <script type="text/babel">
+  import { Scrolly, ScrollyViewport, ScrollyBar } from 'vue-scrolly';
+
   import pointerScroll from '../mixins/pointerScroll'
   import typeAheadPointer from '../mixins/typeAheadPointer'
   import ajax from '../mixins/ajax'
@@ -96,7 +123,9 @@
    * @name VueSelect
    */
   export default {
-    components: {...childComponents},
+    components: {...childComponents, Scrolly,
+      ScrollyViewport,
+      ScrollyBar},
 
     mixins: [pointerScroll, typeAheadPointer, ajax],
 
