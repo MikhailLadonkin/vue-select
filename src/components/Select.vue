@@ -67,7 +67,7 @@
       </div>
     </div>
     <transition :name="transition">
-        <ul ref="dropdownMenu" v-if="dropdownOpen" :id="`vs${uid}__listbox`" :key="`vs${uid}__listbox`" class="vs__dropdown-menu" role="listbox" @mousedown.prevent="onMousedown" @mouseup="onMouseUp" v-append-to-body>
+        <ul ref="dropdownMenu" v-if="dropdownOpen" :id="`vs${uid}__listbox`" :key="`vs${uid}__listbox`" class="vs__dropdown-menu" role="listbox" @mousedown.prevent="onMousedown" @mouseup="onMouseUp" v-append-to-body :height="setHeight">
           <scrolly :passiveScroll="false" class="foo" :style="{ width: '100%', height: '100%' }">
             <scrolly-viewport>
               <slot name="list-header" v-bind="scope.listHeader" />
@@ -1011,6 +1011,10 @@
        */
       isTrackingValues () {
         return typeof this.value === 'undefined' || this.$options.propsData.hasOwnProperty('reduce');
+      },
+
+      setHeight() {
+        document.querySelector('.vs__dropdown-menu').style.height = document.querySelector('.vs__dropdown-option').offsetHeight * document.querySelectorAll('.vs__dropdown-option').length + 'px';
       },
 
       /**
