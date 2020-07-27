@@ -53,29 +53,31 @@
       </div>
     </div>
     <transition :name="transition">
-      <ul ref="dropdownMenu" v-if="dropdownOpen" :id="`vs${uid}__listbox`" :key="`vs${uid}__listbox`" class="vs__dropdown-menu" role="listbox" @mousedown.prevent="onMousedown" @mouseup="onMouseUp" v-append-to-body>
-        <slot name="list-header" v-bind="scope.listHeader" />
-        <li
-          role="option"
-          v-for="(option, index) in filteredOptions"
-          :key="getOptionKey(option)"
-          :id="`vs${uid}__option-${index}`"
-          class="vs__dropdown-option"
-          :class="{ 'vs__dropdown-option--selected': isOptionSelected(option), 'vs__dropdown-option--highlight': index === typeAheadPointer, 'vs__dropdown-option--disabled': !selectable(option) }"
-          :aria-selected="index === typeAheadPointer ? true : null"
-          @mouseover="selectable(option) ? typeAheadPointer = index : null"
-          @mousedown.prevent.stop="selectable(option) ? select(option) : null"
-        >
-          <slot name="option" v-bind="normalizeOptionForSlot(option)">
-            {{ getOptionLabel(option) }}
-          </slot>
-        </li>
-        <li v-if="filteredOptions.length === 0" class="vs__no-options">
-          <slot name="no-options" v-bind="scope.noOptions">Sorry, no matching options.</slot>
-        </li>
-        <slot name="list-footer" v-bind="scope.listFooter" />
-      </ul>
-      <ul v-else :id="`vs${uid}__listbox`" role="listbox" style="display: none; visibility: hidden;"></ul>
+      <slot name="dropdownMenu">
+        <ul ref="dropdownMenu" v-if="dropdownOpen" :id="`vs${uid}__listbox`" :key="`vs${uid}__listbox`" class="vs__dropdown-menu" role="listbox" @mousedown.prevent="onMousedown" @mouseup="onMouseUp" v-append-to-body>
+          <slot name="list-header" v-bind="scope.listHeader" />
+          <li
+                  role="option"
+                  v-for="(option, index) in filteredOptions"
+                  :key="getOptionKey(option)"
+                  :id="`vs${uid}__option-${index}`"
+                  class="vs__dropdown-option"
+                  :class="{ 'vs__dropdown-option--selected': isOptionSelected(option), 'vs__dropdown-option--highlight': index === typeAheadPointer, 'vs__dropdown-option--disabled': !selectable(option) }"
+                  :aria-selected="index === typeAheadPointer ? true : null"
+                  @mouseover="selectable(option) ? typeAheadPointer = index : null"
+                  @mousedown.prevent.stop="selectable(option) ? select(option) : null"
+          >
+            <slot name="option" v-bind="normalizeOptionForSlot(option)">
+              {{ getOptionLabel(option) }}
+            </slot>
+          </li>
+          <li v-if="filteredOptions.length === 0" class="vs__no-options">
+            <slot name="no-options" v-bind="scope.noOptions">Sorry, no matching options.</slot>
+          </li>
+          <slot name="list-footer" v-bind="scope.listFooter" />
+        </ul>
+        <ul v-else :id="`vs${uid}__listbox`" role="listbox" style="display: none; visibility: hidden;"></ul>
+      </slot>
     </transition>
     <slot name="footer" v-bind="scope.footer" />
   </div>
